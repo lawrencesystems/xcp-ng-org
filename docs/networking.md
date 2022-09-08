@@ -94,7 +94,15 @@ This will display all available options.
 ```
 interface-rename --list
 ```
-This will display the current interface mapping/assignments.
+
+This will display the current interface mapping/assignments which should result in something similiar to this:
+```
+Name  MAC                PCI              ethN  Phys   SMBios  Driver  Version                     Firmware                   
+eth0  a8:a1:59:c6:6d:10  0000:26:00.0[0]  eth0  em1            igb     5.3.5.20                    3.16, 0x800004d6           
+eth1  a8:a1:59:c6:6d:0f  0000:27:00.0[0]  eth1  em2            igb     5.3.5.20                    3.16, 0x800004d6           
+eth2  00:11:32:ef:03:2b  0000:2d:00.0[0]  eth2  p22p1          qede    8.42.10.0 [storm 8.42.3.0]  mbi 8.52.20 [mfw 8.53.20.0]
+eth3  00:11:32:ef:03:2c  0000:2d:00.1[0]  eth3  p22p2          qede    8.42.10.0 [storm 8.42.3.0]  mbi 8.52.20 [mfw 8.53.20.0]
+```
 
 Interfaces you wish to rename need to be downed first:
 ```
@@ -103,10 +111,15 @@ ifconfig eth8 down
 ```
 
 The most common use will be an update statement like the following:
+This example will set the mac-address for eth4 & eth8, switching them in the process.
 ```
 interface-rename --update eth4=00:24:81:80:19:63 eth8=00:24:81:7f:cf:8b
 ```
-This example will set the mac-address for eth4 & eth8, switching them in the process.
+
+Or they can be renamed via their physical Linux interface name like this
+```
+interface-rename --update eth0=p22p2 eth3=em2 eth2=p22p1 eth3=em1
+```
 
 The XAPI database needs the old PIFs removed. First list your PIFs for the affected NICs:
 ```
